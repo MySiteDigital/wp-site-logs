@@ -28,22 +28,20 @@ class Install
         $charset_collate = $wpdb->get_charset_collate();
 
         #Check to see if the table exists already, if not, then create it
-
         if ( $wpdb->get_var("show tables like '$table_name'") != $table_name ) {
 
-            $sql = "CREATE TABLE 
-                    `" . $table_name . "` 
-                    (   
-                        `ID`  int(11)   NOT NULL auto_increment,     
-                        `created` datetime DEFAULT 'CURRENT_TIMESTAMP' NOT NULL,
-                        `modified` datetime DEFAULT 'CURRENT_TIMESTAMP' NOT NULL,
-                        `post_id` int(11),
-                        `messages` text,    
-                        PRIMARY KEY (`ID`)  
-                    ) 
-                    " . $charset_collate;
+            $sql = "CREATE TABLE " . $table_name . " (   
+                ID  int(11) NOT NULL auto_increment,
+                created datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                modified datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                type varchar(25),  
+                post_id int(11),
+                messages text,    
+                PRIMARY KEY  (ID)
+            ) " . $charset_collate .";";
+
             require_once( \ABSPATH . '/wp-admin/includes/upgrade.php' );
-            \dbDelta( $sql );
+            $return = \dbDelta( $sql );
         }
     }
 }

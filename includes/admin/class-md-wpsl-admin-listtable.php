@@ -55,6 +55,7 @@ class ListTable extends \WP_List_Table
             'ID' => __('ID', 'wp-site-logs'),
             'created' => __('Created', 'wp-site-logs'),
             'modified' => __('Modified', 'wp-site-logs'),
+            'type' => __('Type', 'wp-site-logs'),
             'post_id' => __('Related Post', 'wp-site-logs'),
         ];
         return $columns;
@@ -73,6 +74,7 @@ class ListTable extends \WP_List_Table
             'ID' => ['ID', true],
             'created' => ['created', true],
             'modified' => ['modified', true],
+            'type' => ['type', true],
             'post_id' => ['post_id', true],
         );
         return $sortable_columns;
@@ -132,6 +134,20 @@ class ListTable extends \WP_List_Table
     }
 
     /**
+     * [OPTIONAL] this is example, how to render specific column
+     *
+     * method name must be like this: "column_[column_name]"
+     *
+     * @param $item - row (key, value array)
+     * @return HTML
+     */
+    function column_type($item)
+    {
+        return '<em>' . $item['type'] . '</em>';
+    }
+    
+
+    /**
      * [OPTIONAL] this is example, how to render column with actions,
      * when you hover row "Edit | Delete" links showed
      *
@@ -159,7 +175,7 @@ class ListTable extends \WP_List_Table
         global $wpdb;
         $table_name = $wpdb->prefix . self::$table_name; // do not forget about tables prefix
 
-        $per_page = 5; // constant, how much records will be shown per page
+        $per_page = 20; // constant, how much records will be shown per page
 
         $columns = $this->get_columns();
         $hidden = array();
@@ -168,8 +184,6 @@ class ListTable extends \WP_List_Table
         // here we configure table headers, defined in our methods
         $this->_column_headers = array($columns, $hidden, $sortable);
 
-        // [OPTIONAL] process bulk action if any
-        $this->process_bulk_action();
 
         // will be used in pagination settings
         $total_items = $wpdb->get_var("SELECT COUNT(id) FROM $table_name");

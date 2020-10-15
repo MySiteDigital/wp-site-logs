@@ -60,7 +60,8 @@ final class WPSiteLogs
      */
     public function includes()
     {
-        include_once(WPSL_PLUGIN_PATH . 'includes/install/class-md-wpsl-install.php');
+        include_once( WPSL_PLUGIN_PATH . 'includes/install/class-md-wpsl-install.php');
+        include_once( WPSL_PLUGIN_PATH . 'includes/class-md-wpsl-logger.php');
         include_once( WPSL_PLUGIN_PATH . 'includes/admin/class-md-wpsl-admin-menu.php' );
         include_once( WPSL_PLUGIN_PATH . 'includes/admin/class-md-wpsl-admin-listtable.php' );
     }
@@ -70,7 +71,7 @@ final class WPSiteLogs
      */
     private function init_hooks()
     {
-        register_activation_hook(__FILE__, [ Install::class, 'create_db_table' ] );
+        \register_activation_hook(__FILE__, [ Install::class, 'create_db_table' ] );
     }
 }
 
