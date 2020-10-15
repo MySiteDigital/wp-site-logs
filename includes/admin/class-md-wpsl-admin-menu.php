@@ -2,6 +2,8 @@
 
 namespace MySiteDigital\WPSiteLogs\Admin;
 
+use MySiteDigital\WPSiteLogs\Logger;
+
 /**
  *
  * @class    Menu
@@ -30,11 +32,19 @@ class Menu
             \__('Site Logs', 'wp-site-logs'),
             'manage_options',
             'site-logs',
-            [$this, 'site_logs_output']
+            [$this, 'site_logs_table_output']
+        );
+        \add_submenu_page(
+            null,
+            \__('Site Log Entry', 'wp-site-logs'),
+            \__('Site Log Entry', 'wp-site-logs'),
+            'manage_options',
+            'site_log',
+            [$this, 'site_log_output']
         );
     }
 
-    public function site_logs_output()
+    public function site_logs_table_output()
     {
         global $wpdb;
 
@@ -51,6 +61,52 @@ class Menu
                     <?php $table->display() ?>
                 </form>
 
+            </div>
+        <?php
+    }
+
+    public function site_log_output()
+    {
+        global $wpdb;
+        $output = '';
+
+        if (isset($_GET['id']) && $_GET['id']) {
+            $messages = Logger::get_messages(intval($_GET['id']));
+
+            if (!empty($messages)) {
+                $output = $messages;
+            }
+        }
+
+        ?>
+            <div class="wrap">
+                <h1 class="wp-heading-inline">
+                    <?php echo \__('Site Log Entry', 'wp-site-logs'); ?>
+                </h1>
+                <a href="/wp-admin/tools.php?page=site-logs" class="page-title-action">
+                    Go Back
+                </a>
+                <table class="wp-list-table widefat fixed striped sitelog">
+                    <tbody id="the-list">
+                        <?php
+                            if ($output) {
+                                ?>
+                                    <tr>
+                                        <th scope="col">
+                                            <span>Date</span>
+                                        </th>
+                                        <th scope="col">
+                                            <span>Message</span>
+                                        </th>
+                                    </tr>
+                                <?php
+                                echo $output;
+                            } else {
+                                echo 'Log not found';
+                            }
+                        ?>
+                        </tobdy>
+                </table>
             </div>
         <?php
     }

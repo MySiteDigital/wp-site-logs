@@ -23,6 +23,7 @@ class Logger
         $table_name = $table_prefix .  'site_logs';
         $message = '
                 <tr>
+                    <td>'. date("Y-m-d h:i:s") . '</td>
                     <td>'. $message . '</td>
                 </tr>';
 
@@ -59,5 +60,18 @@ class Logger
             );
         }
         
+    }
+
+    public static function get_messages( $id )
+    {
+        global $table_prefix, $wpdb;
+        $table_name = $table_prefix .  'site_logs';
+        return $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT messages FROM " . $table_name . "
+                WHERE ID = %d LIMIT 1",
+                $id
+            )
+        );
     }
 }

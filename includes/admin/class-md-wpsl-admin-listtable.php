@@ -51,7 +51,6 @@ class ListTable extends \WP_List_Table
     function get_columns()
     {
         $columns = [
-            'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
             'ID' => __('ID', 'wp-site-logs'),
             'created' => __('Created', 'wp-site-logs'),
             'modified' => __('Modified', 'wp-site-logs'),
@@ -94,18 +93,18 @@ class ListTable extends \WP_List_Table
     }
 
     /**
-     * [REQUIRED] this is how checkbox column renders
+     * [OPTIONAL] this is example, how to render specific column
+     *
+     * method name must be like this: "column_[column_name]"
      *
      * @param $item - row (key, value array)
      * @return HTML
      */
-    function column_cb($item)
+    function column_ID($item)
     {
-        return sprintf(
-            '<input type="checkbox" name="ID[]" value="%s" />',
-            $item['ID']
-        );
+        return '<a href="/wp-admin/?page=site_log&id=' . $item['ID'] . '&action=edit">' . $item['ID'] . '</a>';
     }
+
 
     /**
      * [OPTIONAL] this is example, how to render specific column
