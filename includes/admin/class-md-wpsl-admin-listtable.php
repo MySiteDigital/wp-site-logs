@@ -204,5 +204,3 @@ class ListTable extends \WP_List_Table
         ));
     }
 }
-
-new ListTable();
