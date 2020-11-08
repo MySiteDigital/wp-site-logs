@@ -56,7 +56,7 @@ class Logger
                 ],
                 [
                     'ID' => $log->ID
-                ],
+                ]
             );
         }
         
